@@ -78,28 +78,23 @@
     <util:RegistrySearch Id="vcredist_2015_x64_versionnumbercheck" Root="HKLM" Key="SOFTWARE\Classes\Installer\Dependencies\Microsoft.VS.VC_RuntimeMinimumVSU_amd64,v14" Value="Version" Variable="vcredist_2015_x64_versionnumber" Result="value" Win64="yes"/>
 
     <bal:Condition Message="Installation failed because your version of Windows is too old. Dokan requires Windows 7 SP1 or newer."><![CDATA[Installed OR VersionNT > v6.1 OR (VersionNT = v6.1 AND ServicePackLevel >= 1)]]></bal:Condition>
-
+    
     <Chain>
       <PackageGroupRef Id="NetFx40Web"/>
       
-      <!-- Remember: if DetectCondition is true, this package is considered already present. -->
-      <!-- SPECIAL ONE TIME UPGRADE NOTE: The normal condition is DetectCondition="DokanUninstallString".
+      <!-- Remember: if DetectCondition is true, this package is considered already present. 
         WixBundleAction of 4 means install. 3 is uninstall, 5 is upgrade.
         Making this permanent prevents it from being invoked on uninstall or other removal.
-        Exit codes should look like:
-        <ExitCode Value="1641" Behavior="forceReboot"/>
-        <ExitCode Value="3010" Behavior="forceReboot"/>
-        <ExitCode Value="0" Behavior="success" />
-        but for just this one upgrade, we want to always run the cleaner, if only to make sure kbfsdokan
-        gets shut down + startup shortcuts removed until kill-kbfs is in place.
       -->
       <ExePackage
         SourceFile="$(env.GOPATH)\src\github.com\keybase\client\go\tools\dokanclean\dokanclean.exe"
-        DetectCondition="WixBundleAction = 4"
+        DetectCondition="DokanUninstallString"
         Description="Remove previous drivers"
         PerMachine="yes"
         Permanent="yes">
-        <ExitCode Behavior="forceReboot" />
+        <ExitCode Value="1641" Behavior="forceReboot"/>
+        <ExitCode Value="3010" Behavior="forceReboot"/>
+        <ExitCode Value="0" Behavior="success" />
       </ExePackage>
 
       <ExePackage Id="vcredist_2015_x86.exe"
