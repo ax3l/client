@@ -30,7 +30,7 @@
       <Custom Action="RunMainApp" Before="InstallFinalize">NOT (REMOVE ~= "ALL")</Custom>
       <Custom Action="RunGUI" Before="InstallFinalize">NOT (REMOVE ~= "ALL")</Custom>
       -->
-      <ScheduleReboot After="InstallFinalize"/>
+      <ScheduleReboot After="InstallFinalize">UPGRADINGPRODUCTCODE</ScheduleReboot>
     </InstallExecuteSequence>
 
 
