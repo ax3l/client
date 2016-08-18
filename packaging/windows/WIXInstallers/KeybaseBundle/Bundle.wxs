@@ -84,17 +84,20 @@
       
       <!-- Remember: if DetectCondition is true, this package is considered already present. -->
       <!-- SPECIAL ONE TIME UPGRADE NOTE: The normal condition is DetectCondition="DokanUninstallString",
+        and exit codes should look like:
+        <ExitCode Value="1641" Behavior="forceReboot"/>
+        <ExitCode Value="3010" Behavior="forceReboot"/>
+        <ExitCode Value="0" Behavior="success" />
         but for just this one upgrade, we want to always run the cleaner, if only to make sure kbfsdokan
         gets shut down + startup shortcuts removed until kill-kbfs is in place.
       -->
       <ExePackage
         SourceFile="$(env.GOPATH)\src\github.com\keybase\client\go\tools\dokanclean\dokanclean.exe"
+        DetectCondition="WixBundleAction = 4"
         Description="Remove previous drivers"
         PerMachine="yes"
         Permanent="yes">
-        <ExitCode Value="1641" Behavior="forceReboot"/>
-        <ExitCode Value="3010" Behavior="forceReboot"/>
-        <ExitCode Value="0" Behavior="success" />
+        <ExitCode Behavior="forceReboot" />
       </ExePackage>
 
       <ExePackage Id="vcredist_2015_x86.exe"
