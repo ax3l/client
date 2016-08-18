@@ -83,9 +83,13 @@
       <PackageGroupRef Id="NetFx40Web"/>
       
       <!-- Remember: if DetectCondition is true, this package is considered already present. -->
+      <!-- SPECIAL ONE TIME UPGRADE NOTE: The normal condition is DetectCondition="DokanUninstallString",
+        but for just this one upgrade, we want to always run the cleaner, if only to make sure kbfsdokan
+        gets shut down + startup shortcuts removed until kill-kbfs is in place.
+      -->
       <ExePackage
         SourceFile="$(env.GOPATH)\src\github.com\keybase\client\go\tools\dokanclean\dokanclean.exe"
-        DetectCondition="DokanUninstallString"
+        DetectCondition="WixBundleAction &gt;&lt; 3"
         Description="Remove previous drivers"
         PerMachine="yes"
         Permanent="yes">
