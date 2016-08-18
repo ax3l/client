@@ -89,7 +89,6 @@
       -->
       <ExePackage
         SourceFile="$(env.GOPATH)\src\github.com\keybase\client\go\tools\dokanclean\dokanclean.exe"
-        DetectCondition="WixBundleAction &gt;&lt; 3"
         Description="Remove previous drivers"
         PerMachine="yes"
         Permanent="yes">
