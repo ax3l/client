@@ -27,9 +27,8 @@
       <Custom Action="StopMainApp" Before="InstallValidate"/>
       <Custom Action="StopKBFS" Before="InstallValidate"/>
       <!-- Make this one reboot until kill-kbfs is likely to be there -->
-      <Custom Action="RunMainApp" Before="InstallFinalize">NOT UPGRADINGPRODUCTCODE AND NOT (REMOVE ~= "ALL")</Custom>
-      <Custom Action="RunGUI" Before="InstallFinalize">NOT UPGRADINGPRODUCTCODE AND NOT (REMOVE ~= "ALL")</Custom>
-      <ScheduleReboot After="InstallFinalize">UPGRADINGPRODUCTCODE</ScheduleReboot>
+      <Custom Action="RunMainApp" Before="InstallFinalize">NOT (REMOVE ~= "ALL")</Custom>
+      <Custom Action="RunGUI" Before="InstallFinalize">NOT (REMOVE ~= "ALL")</Custom>
     </InstallExecuteSequence>
 
 
