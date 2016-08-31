@@ -277,6 +277,7 @@ getinbox:
 		} else {
 			ipagination = iview.Pagination
 		}
+
 	}
 
 	return conversationInfo, triple, errors.New("conversation not found")
@@ -453,8 +454,24 @@ func (h *chatLocalHandler) fillSenderIDsForPostLocal(arg *keybase1.PostLocalArg)
 		return fmt.Errorf("Can't send message without a current DeviceID. Are you logged in?")
 	}
 
-	arg.MessagePlaintext.ClientHeader.Sender = gregor1.UID(uid)
-	arg.MessagePlaintext.ClientHeader.SenderDevice = gregor1.DeviceID(did)
+	// Convert types to Gregor land
+	of := gregor1.ObjFactory{}
+	guid, err := of.MakeUID(uid.ToBytes())
+	if err != nil {
+		return err
+	}
+
+	didBytes := make([]byte, keybase1.DeviceIDLen)
+	if err = did.ToBytes(didBytes); err != nil {
+		return err
+	}
+	gdid, err := of.MakeDeviceID(didBytes)
+	if err != nil {
+		return err
+	}
+
+	arg.MessagePlaintext.ClientHeader.Sender = guid.(gregor1.UID)
+	arg.MessagePlaintext.ClientHeader.SenderDevice = gdid.(gregor1.DeviceID)
 
 	return nil
 }
