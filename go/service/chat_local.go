@@ -61,6 +61,7 @@ func (h *chatLocalHandler) GetThreadLocal(ctx context.Context, arg keybase1.GetT
 
 // NewConversationLocal implements keybase.chatLocal.newConversationLocal protocol.
 func (h *chatLocalHandler) NewConversationLocal(ctx context.Context, trip chat1.ConversationIDTriple) (id chat1.ConversationID, err error) {
+	h.G().Log.Debug("NewConversationLocal: %+v (%x)", trip, trip.Tlfid)
 	// TODO: change rpc to take a topic name, and follow up with a message with
 	// MessageType=TOPIC_NAME to set the topic name for the conversation
 	id, err = h.remoteClient().NewConversationRemote(ctx, trip)
