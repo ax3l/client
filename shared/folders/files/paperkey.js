@@ -6,7 +6,7 @@ import type {State as StoreState} from '../../reducers/unlock-folders'
 import {bindActionCreators} from 'redux'
 import {checkPaperKey, toPaperKeyInput, onBackFromPaperKey} from '../../actions/unlock-folders'
 import {connect} from 'react-redux'
-import {navigateUp} from '../../actions/router'
+import {navigateBack} from '../../actions/router'
 
 type Props = {
   error: string,
@@ -75,5 +75,5 @@ export default connect(
       phase: state.unlockFolders.phase,
     }
   },
-  dispatch => bindActionCreators({onBack: navigateUp, checkPaperKey, toPaperKeyInput, onBackFromPaperKey}, dispatch),
+  dispatch => bindActionCreators({onBack: navigateBack, checkPaperKey, toPaperKeyInput, onBackFromPaperKey}, dispatch),
 )(PaperKey)
